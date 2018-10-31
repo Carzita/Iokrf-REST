@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -15,27 +16,35 @@ namespace WebApplication2.NewFolder
     [Route("api/[controller]")]
     public class ValuesController : ControllerBase
     {
+        private HttpClient Client;
+        
+        public ValuesController() : base()
+        {
+            this.Client = new HttpClient
+            {
+                BaseAddress = new Uri("https://iokrf-3d980.firebaseio.com")
+
+            };
+        }
+
         // GET: api/<controller>
          [Produces("application/json")]
-         public async Task<IActionResult> Get(string offenders)
+         public async Task<IActionResult> PostCallAPI(string url, object jsonObject)
          {
-            using (var client = new HttpClient())
-            {
                 try
                 {
-                    client.BaseAddress = new Uri("https://iokrf-3d980.firebaseio.com");
-                    var response = await client.GetAsync("/offenders.json");
+                    var content = new StringContent(jsonObject.ToString(), Encoding.UTF8, "application/json");
+                    var response = await Client.GetAsync("/offenders.json");
                     response.EnsureSuccessStatusCode();
 
                     var result = await response.Content.ReadAsStringAsync();
-                    return new JsonResult(result);
+                    return Content(result, "application/json");
 
                 }
                 catch (HttpRequestException ex)
                 {
                     return BadRequest(ex);
                 }
-            }
         }
 
         // GET api/<controller>/5
