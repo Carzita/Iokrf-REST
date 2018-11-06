@@ -15,6 +15,7 @@ namespace WebApplication2
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddMvc();
         }
 
@@ -26,11 +27,17 @@ namespace WebApplication2
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+
             app.UseMvc();
 
             app.Run(async (context) =>
             {
-                await context.Response.WriteAsync("MVC did not found anything!");
+                await context.Response.WriteAsync("go to: https://localhost:44330/api/values");
             });
         }
     }

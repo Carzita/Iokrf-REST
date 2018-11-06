@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -67,11 +68,27 @@ namespace WebApplication2.NewFolder
             return CreatedAtAction("Get", new { id = value.Id }, value);
         }
 
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        /*// PUT api/<controller>
+        [Produces("application/json")]
+        public async Task<IActionResult> PutWebApi(string url, object jsonObject)
         {
-        }
+            if (!ModelState.IsValid)
+            {
+                // throw new InvalidOperationException("Invalid");
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var content = new StringContent(jsonObject.ToString(), Encoding.UTF8, "application/json");
+                var response = await Client.PutAsync("/offenders.json");
+                response.EnsureSuccessStatusCode();
+
+
+                // Save the value to the DB
+                return CreatedAtAction("Get", new { id = value.Id }, value);
+            }
+
+        }*/
 
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
