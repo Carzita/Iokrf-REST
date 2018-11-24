@@ -12,14 +12,14 @@ using Newtonsoft.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace WebApplication2.NewFolder
+namespace WebApplication2.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : ControllerBase
+    public class OffenderController : ControllerBase
     {
         private HttpClient Client;
         
-        public ValuesController() : base()
+        public OffenderController() : base()
         {
             this.Client = new HttpClient
             {
@@ -34,7 +34,6 @@ namespace WebApplication2.NewFolder
          {
                 try
                 {
-                    var content = new StringContent(jsonObject.ToString(), Encoding.UTF8, "application/json");
                     var response = await Client.GetAsync("/offenders.json");
                     response.EnsureSuccessStatusCode();
 
@@ -46,13 +45,6 @@ namespace WebApplication2.NewFolder
                 {
                     return BadRequest(ex);
                 }
-        }
-
-        // GET api/<controller>/5
-        [HttpGet("{id?}")]
-        public IActionResult Get(int id, string query)
-        {
-            return Ok(new Value { Id = id, Text = "value " + id });
         }
 
         // POST api/<controller>
@@ -67,28 +59,6 @@ namespace WebApplication2.NewFolder
             // Save the value to the DB
             return CreatedAtAction("Get", new { id = value.Id }, value);
         }
-
-        /*// PUT api/<controller>
-        [Produces("application/json")]
-        public async Task<IActionResult> PutWebApi(string url, object jsonObject)
-        {
-            if (!ModelState.IsValid)
-            {
-                // throw new InvalidOperationException("Invalid");
-                return BadRequest(ModelState);
-            }
-            try
-            {
-                var content = new StringContent(jsonObject.ToString(), Encoding.UTF8, "application/json");
-                var response = await Client.PutAsync("/offenders.json");
-                response.EnsureSuccessStatusCode();
-
-
-                // Save the value to the DB
-                return CreatedAtAction("Get", new { id = value.Id }, value);
-            }
-
-        }*/
 
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
